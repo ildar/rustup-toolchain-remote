@@ -1,0 +1,12 @@
+#REMOTE_HOST=localhost
+
+#REMOTE_SHELL=ssh
+
+#REMOTE_SHELL_SHELL_OPT=""
+
+#SYNC_CWD=yes
+
+#SYNC_EXCLUDES=target
+
+#DEST_DIR=/tmp/remote-builds/`basename "$PWD"`
+
