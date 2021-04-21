@@ -6,6 +6,8 @@
 
 #SYNC_CWD=yes
 
+#SYNC_QUIET=no
+
 #SYNC_EXCLUDES=target
 
 #DEST_DIR=/tmp/remote-builds/`basename "$PWD"`
