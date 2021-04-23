@@ -1,0 +1,20 @@
+REMOTE_HOST=--
+
+REMOTE_SHELL=hsh-run
+
+REMOTE_SHELL_OPT="--mountpoints=/proc,/dev/pts"
+export share_network=1
+
+REMOTE_SHELL_SHELL_WRAP="sh -c"
+
+#SYNC_CWD=yes
+
+#SYNC_QUIET=no
+
+#SYNC_EXCLUDES=target
+
+#DEST_DIR=/tmp/remote-builds/`basename "$PWD"`
+
+# fixes for GNOME Builder
+export TMP=${TMP:-/tmp/.private/$USER}
+
