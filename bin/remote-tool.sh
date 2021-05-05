@@ -27,7 +27,7 @@ if [ "$SYNC_CWD" = yes -a \( -e .git -o -e Cargo.toml \) ]; then
     . "$REMOTE_HOST":"$DEST_DIR"
 fi
 
-$REMOTE_SHELL $REMOTE_SHELL_OPT "$REMOTE_HOST" -- $REMOTE_SHELL_SHELL_WRAP "cd \"$DEST_DIR\" 2>/dev/null;\"$TOOL_NAME\" $ARGS"
+$REMOTE_SHELL $REMOTE_SHELL_OPT "$REMOTE_HOST" -- $REMOTE_SHELL_SHELL_WRAP ". \$HOME/.cargo/env; cd \"$DEST_DIR\" 2>/dev/null;\"$TOOL_NAME\" $ARGS"
 
 #FIXME add pulling the results
 #FIXME add cleanup option
