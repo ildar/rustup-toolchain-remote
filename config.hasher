@@ -9,7 +9,7 @@ REMOTE_SHELL_SHELL_WRAP="sh -c"
 
 #SYNC_CWD=yes
 
-#SYNC_QUIET=no
+#SYNC_QUIET=yes
 
 #SYNC_EXCLUDES=target
 

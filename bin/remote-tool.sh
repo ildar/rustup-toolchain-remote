@@ -12,19 +12,31 @@ REMOTE_SHELL=${REMOTE_SHELL:-ssh}
 REMOTE_SHELL_OPT=${REMOTE_SHELL_OPT:-}
 REMOTE_SHELL_SHELL_WRAP=${REMOTE_SHELL_SHELL_WRAP:-}
 SYNC_CWD=${SYNC_CWD:-yes}
-SYNC_QUIET=${SYNC_QUIET:-no}
+SYNC_QUIET=${SYNC_QUIET:-yes}
 SYNC_EXCLUDES=${SYNC_EXCLUDES:-target}
-DEST_DIR=${DEST_DIR:-/tmp/remote-builds/`basename "$PWD"`/}
+DEST_DIR=${DEST_DIR:-/tmp/remote-builds/`basename "$PWD"`}
 
 [ "$SYNC_CWD" = true ] && SYNC_CWD=yes
 [ "$SYNC_QUIET" = true ] && SYNC_QUIET=yes
 [ "$SYNC_QUIET" = yes ] || RSYNC_PROGRESS="--info=progress2"
 
-if [ "$SYNC_CWD" = yes -a \( -e .git -o -e Cargo.toml \) ]; then
+SYNC_SOURCE="$PWD"
+if [ -e .git ] || [ -e Cargo.toml ] || [ -n "`echo $ARGS | grep Cargo.toml`" ]; then
+  for a in $ARGS; do
+    echo "$a" | grep -q Cargo.toml &&
+      SYNC_SOURCE=`dirname "$a"` &&
+      DEST_DIR=/tmp/remote-builds/`basename "$SYNC_SOURCE"`
+  done
+  ARGS=`echo "$ARGS" | sed "s|$SYNC_SOURCE|$DEST_DIR|g"`
+else
+  unset DEST_DIR
+fi
+
+if [ "$SYNC_CWD" = yes ] && [ -n "$DEST_DIR" ]; then
   $REMOTE_SHELL $REMOTE_SHELL_OPT "$REMOTE_HOST" -- mkdir -p "$DEST_DIR"
   rsync --rsh="$REMOTE_SHELL" \
     -a --delete --compress $RSYNC_PROGRESS --exclude "$SYNC_EXCLUDES" -- \
-    . "$REMOTE_HOST":"$DEST_DIR"
+    "$SYNC_SOURCE"/. "$REMOTE_HOST":"$DEST_DIR"/
 fi
 
 $REMOTE_SHELL $REMOTE_SHELL_OPT "$REMOTE_HOST" -- $REMOTE_SHELL_SHELL_WRAP ". \$HOME/.cargo/env; cd \"$DEST_DIR\" 2>/dev/null;\"$TOOL_NAME\" $ARGS"
