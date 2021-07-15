@@ -7,6 +7,8 @@ export share_network=1
 
 REMOTE_SHELL_SHELL_WRAP="sh -c"
 
+#REMOTE_SHELL_STDIO_TRANS=true
+
 #SYNC_CWD=yes
 
 #SYNC_QUIET=yes
